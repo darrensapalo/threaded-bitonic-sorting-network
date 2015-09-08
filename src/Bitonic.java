@@ -9,13 +9,13 @@ public class Bitonic {
      * Verbose comments
      */
 
-    final static boolean VERBOSE_COMMENTS = !false;
+    final static boolean VERBOSE_COMMENTS = false;
 
     public static void main(String[] args) {
         /**
          * The total number of elements to sort
          */
-        final int SIZE = 16;
+        final int SIZE = 1024;
 
         /**
          * The total number of comparators
@@ -97,5 +97,9 @@ public class Bitonic {
         for (int l = 0; l < SIZE; l++) {
             System.out.println(l + " " + numbers[l]);
         }
+
+        SortTest test = new SortTest(numbers);
+        boolean result = test.isSortedAscending();
+        System.out.println("Is the array sorted? " + result);
     }
 }

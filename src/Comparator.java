@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
  * This switch class will ensure that when the run method is called,
  * the first element is already the larger number.
  */
-public class Comparator implements Callable<Boolean> {
+public class Comparator implements Callable<Boolean>, Runnable {
 
 	/**
 	 * This flag is true when the first element must be greater than the second element.
@@ -52,13 +52,29 @@ public class Comparator implements Callable<Boolean> {
 	 */
 	@Override
 	public Boolean call() {
-		if (isAscending && numbers[firstElement] > numbers[secondElement] || !isAscending && numbers[firstElement] < numbers[secondElement]) {
-			int temp = numbers[firstElement];
-			numbers[firstElement] = numbers[secondElement];
-			numbers[secondElement] = temp;
-			// System.out.println("Task #" + id + " performed the switch.");
-			return true;
-		}
-		return false;
+        if (isAscending && numbers[firstElement] > numbers[secondElement] || !isAscending && numbers[firstElement] < numbers[secondElement]) {
+            int temp = numbers[firstElement];
+            numbers[firstElement] = numbers[secondElement];
+            numbers[secondElement] = temp;
+            // System.out.println("Task #" + id + " performed the switch.");
+            return true;
+        }
+        return false;
 	}
+
+    /**
+     * <p>If <code>isAscending</code> is true, this comparator ensures that <code>numbers[firstElement]</code>
+     * is greater than <code>numbers[secondElement]</code></p>
+     *
+     * <p>If <code>isAscending</code> is false, this comparator ensures that <code>numbers[secondElement]</code>
+     * is greater than <code>numbers[firstElement]</code></p>
+     */
+    @Override
+    public void run() {
+        if (isAscending && numbers[firstElement] > numbers[secondElement] || !isAscending && numbers[firstElement] < numbers[secondElement]) {
+            int temp = numbers[firstElement];
+            numbers[firstElement] = numbers[secondElement];
+            numbers[secondElement] = temp;
+        }
+    }
 }
