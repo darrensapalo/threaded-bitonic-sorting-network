@@ -12,7 +12,7 @@ public class Switch implements Runnable {
 		this.first = first;
 		this.last = last;
 		this.numbers = numbers;
-		System.out.println("Created thread #" + index + " " + first + " " + last + (asc ? " asc" : " desc"));
+		// System.out.println("Created thread #" + index + " " + first + " " + last + (asc ? " asc" : " desc"));
 	}
 
 	/**
@@ -26,7 +26,7 @@ public class Switch implements Runnable {
 			int temp = numbers[first];
 			numbers[first] = numbers[last];
 			numbers[last] = temp;
-			System.out.println("Thread #" + index + " performed switching");
+			// System.out.println("Thread #" + index + " performed switching");
 		}
 	}
 }
