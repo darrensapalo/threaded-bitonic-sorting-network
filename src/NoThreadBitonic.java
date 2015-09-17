@@ -1,12 +1,11 @@
 import java.time.Instant;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Bitonic {
+public class NoThreadBitonic {
 
     /**
      * Verbose comments
@@ -14,14 +13,11 @@ public class Bitonic {
 
     final static boolean VERBOSE_COMMENTS = false;
 
-    public static int SIZE = 1024 * 32;
-
-    public static int poolSize = 2;
-    
     public void main(String[] args) {
         /**
          * The total number of elements to sort
          */
+        final int SIZE = Bitonic.SIZE;
 
         /**
          * The total number of comparators
@@ -52,16 +48,16 @@ public class Bitonic {
 		/* Generate random numbers and place them in the list of elements */
         for (int i = 0; i < SIZE; i++) {
             numbers[i] = random.nextInt();
-            if (false)
-            System.out.println(i + " " + numbers[i]);
+            // System.out.println(i + " " + numbers[i]);
         }
 
         /* On what region of the bitonic sort are we in? */
         int region = 1;
         int gate = 1;
 
-        Instant start = Instant.now();
         
+        Instant start = Instant.now();
+
 		/* Loop for the whole bitonic sorting algorithm. Begin at half the size of the data elements. */
         for (int i = HALF; i >= 1; i /= 2) {
             if (VERBOSE_COMMENTS)
@@ -85,37 +81,27 @@ public class Bitonic {
                     boolean isAscending = (id / alternate) % 2 == 0;
 
                     /* Submit the comparator task */
-                    ecs.submit(new Comparator(isAscending, id, firstElement, secondElement, numbers));
-                }
-
-                /* Execute all the comparators in parallel. Block until all have finished in this gate. */
-                for (int id = 0; id < HALF; id++) {
-                    try {
-                        ecs.take();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    // ecs.submit(new Comparator(isAscending, id, firstElement, secondElement, numbers));
+                    new Comparator(isAscending, id, firstElement, secondElement, numbers).run();
                 }
                 // System.out.println();
             }
         }
+
         Instant end = Instant.now();
         
-        /* Display the sorted list */
         if (false)
+        /* Display the sorted list */
         for (int l = 0; l < SIZE; l++) {
             System.out.println(l + " " + numbers[l]);
         }
         
+        long duration = start.until(end, ChronoUnit.MILLIS);
 
-        long until = start.until(end, ChronoUnit.MILLIS);
+        System.out.println("Sorting took " + duration + "ms.");
         
-        System.out.println("Sorting took " + until + "ms.");
-
         SortTest test = new SortTest(numbers);
         boolean result = test.isSortedAscending();
         System.out.println("Is the array sorted? " + result);
-
-		pool.shutdown();
     }
 }
