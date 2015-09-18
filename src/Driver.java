@@ -1,32 +1,25 @@
+import sort.Bitonic;
+import sort.erroneous.NoBlockingBitonic;
+import sort.NoThreadBitonic;
+import sort.network.Network;
+import util.Dataset;
 
 public class Driver {
 	public static void main(String[] args) {
-		Bitonic.SIZE = 1024 * 1024;
-		Bitonic.poolSize = Bitonic.SIZE / 2;
+		Bitonic.SIZE = 1024;
+		Bitonic.POOL_SIZE = 32;
 
+		int[] numbers = Dataset.generate(Bitonic.SIZE);
+        Network network = new Network(Bitonic.SIZE);
 
-		System.out.println();
-		System.out.println("No threads, compare immediately");
 		NoThreadBitonic noThreadBitonic = new NoThreadBitonic();
-		noThreadBitonic.main(null);
-		
-		
-		System.out.println();
-		System.out.println("With threads, no blocking");
-		NoBlockingBitonic noBlockingBitonic = new NoBlockingBitonic();
-		noBlockingBitonic.main(null);
+		noThreadBitonic.start(network, numbers);
 
-
-		System.out.println();
-		System.out.println("With threads, with blocking");
 		Bitonic bitonic = new Bitonic();
-		bitonic.main(null);
-		
-		/*
-		System.out.println();
-		System.out.println("Generate a thread, compare immediately");
-		NoThreadPoolBitonic noThreadPoolBitonic = new NoThreadPoolBitonic();
-		noThreadPoolBitonic.main(null);
-		*/
+		bitonic.start(network, numbers);
+
+		sort.NoThreadPoolBitonic noThreadPoolBitonic = new sort.NoThreadPoolBitonic();
+		noThreadPoolBitonic.start(network, numbers);
+
 	}
 }

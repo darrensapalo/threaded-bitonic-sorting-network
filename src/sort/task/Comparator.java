@@ -1,10 +1,15 @@
+package sort.task;
+
+import sort.Bitonic;
+
+import java.io.Serializable;
 import java.util.concurrent.Callable;
 
 /**
  * This switch class will ensure that when the run method is called,
  * the first element is already the larger number.
  */
-public class Comparator implements Callable<Boolean>, Runnable {
+public class Comparator implements Serializable, Callable<Boolean>, Runnable {
 
 	/**
 	 * This flag is true when the first element must be greater than the second element.
@@ -29,19 +34,22 @@ public class Comparator implements Callable<Boolean>, Runnable {
     /**
      * The array of numbers which holds all the data elements.
      */
-	private final int[] numbers;
+	private int[] numbers;
 
-	public Comparator(boolean isAscending, int taskID, int firstElement, int secondElement, int[] numbers) {
+	public Comparator(boolean isAscending, int taskID, int firstElement, int secondElement) {
 		this.isAscending = isAscending;
 		this.id = taskID;
 		this.firstElement = firstElement;
 		this.secondElement = secondElement;
-		this.numbers = numbers;
         if (Bitonic.VERBOSE_COMMENTS)
             System.out.printf("Compare elem %4d %4d %s\n", firstElement, secondElement, (isAscending ? " asc" : " desc"));
 	}
 
-	/**
+    public void setNumbers(int[] numbers) {
+        this.numbers = numbers;
+    }
+
+    /**
      * <p>If <code>isAscending</code> is true, this comparator ensures that <code>numbers[firstElement]</code>
      * is greater than <code>numbers[secondElement]</code></p>
      *
