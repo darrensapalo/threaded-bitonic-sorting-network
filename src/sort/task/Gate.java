@@ -29,7 +29,7 @@ public class Gate {
             c.setNumbers(numbers);
             service.submit(c);
         }
-        // Block per gate
+        // Block at this gate
         int size = Bitonic.SIZE / 2;
         for (int i = 0; i < size; ++i)
         {
@@ -42,6 +42,8 @@ public class Gate {
     }
 
     public void immediateCompare(int[] numbers){
+
+        // Just compare immedaitely
         for (Comparator comparison : comparisons) {
             comparison.setNumbers(numbers);
             comparison.run();
@@ -49,10 +51,25 @@ public class Gate {
     }
 
     public void generateThreadAndCompare(int[] numbers){
+        int size = Bitonic.SIZE / 2;
+        Thread[] threads = new Thread[size];
+
+        // Work, all ye parallel
+        int count = 0;
         for (Comparator comparison : comparisons) {
             comparison.setNumbers(numbers);
             Thread thread = new Thread(comparison);
+            threads[count++] = thread;
             thread.start();
+        }
+
+        // Block at this gate
+        for (int i = 0; i < size; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
