@@ -8,7 +8,8 @@ public class NoThreadBitonic extends BitonicTemplate {
 
     protected void sort(Network network, int[] numbers) {
 
-        for (int i = 0; i < network.size(); i++){
+        int size = network.size();
+        for (int i = 0; i < size; i++){
             Gate gate = network.getGate(i);
             gate.immediateCompare(numbers);
         }

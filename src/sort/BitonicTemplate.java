@@ -16,8 +16,13 @@ public abstract class BitonicTemplate {
     protected void after(){}
 
 
-
-    public void start(Network network, int[] numbers){
+    /**
+     *
+     * @param network the bitonic sorting network to use
+     * @param numbers the dataset array
+     * @return The sorting duration in ms
+     */
+    public long start(Network network, int[] numbers){
         System.out.println(getApproachName());
 
         before();
@@ -28,9 +33,13 @@ public abstract class BitonicTemplate {
 
         long duration = endTime - startTime;
 
-        System.out.println("Duration: " + duration + "ms");
+        System.out.println(" -> " + duration + "ms");
         SortTest test = new SortTest(numbers);
         boolean result = test.isSortedAscending();
-        System.out.println("Sorted: " + result + "\n");
+
+        if (!result)
+            System.out.println("Sorted: " + result + "\n");
+
+        return duration;
     }
 }

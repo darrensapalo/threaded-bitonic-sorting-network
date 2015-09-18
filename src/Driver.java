@@ -1,25 +1,55 @@
 import sort.Bitonic;
-import sort.erroneous.NoBlockingBitonic;
 import sort.NoThreadBitonic;
 import sort.network.Network;
 import util.Dataset;
 
 public class Driver {
-	public static void main(String[] args) {
-		Bitonic.SIZE = 1024;
-		Bitonic.POOL_SIZE = 32;
+    public static void main(String[] args) {
+        Bitonic.SIZE = 1024 * 64;
+        Bitonic.POOL_SIZE = 32;
 
-		int[] numbers = Dataset.generate(Bitonic.SIZE);
-        Network network = new Network(Bitonic.SIZE);
+        /**
+         * Perform tests for 1024*64 and the four following data points
+         */
+        int i = Bitonic.SIZE * 2 * 2 * 2 * 2;
 
-		NoThreadBitonic noThreadBitonic = new NoThreadBitonic();
-		noThreadBitonic.start(network, numbers);
+        /**
+         * Perform multiple tests and get the average performance
+         */
+        int numberOfTests = 25;
 
-		Bitonic bitonic = new Bitonic();
-		bitonic.start(network, numbers);
+        for (int size = Bitonic.SIZE; size <= i; size *= 2) {
 
-		sort.NoThreadPoolBitonic noThreadPoolBitonic = new sort.NoThreadPoolBitonic();
-		noThreadPoolBitonic.start(network, numbers);
+            int[] numbers = Dataset.generate(Bitonic.SIZE);
 
-	}
+            System.out.println("Dataset (" + size + ") generated.");
+
+            Network network = new Network(Bitonic.SIZE);
+
+            System.out.println("Network generated.");
+
+            long duration = 0;
+            for (int count = 0; count < numberOfTests; count++) {
+                NoThreadBitonic noThreadBitonic = new NoThreadBitonic();
+                long durationSub = noThreadBitonic.start(network, numbers);
+                duration += durationSub;
+            }
+            duration /= numberOfTests;
+            System.out.println("Average: " + duration + "ms");
+
+            duration = 0;
+            for (int count = 0; count < numberOfTests; count++) {
+                Bitonic bitonic = new Bitonic();
+                long durationSub = bitonic.start(network, numbers);
+                duration += durationSub;
+            }
+            duration /= numberOfTests;
+            System.out.println("Average: " + duration + "ms");
+
+        }
+
+        // NoThreadPoolBitonic noThreadPoolBitonic = new sort.NoThreadPoolBitonic();
+        // noThreadPoolBitonic.start(network, numbers);
+
+    }
 }
