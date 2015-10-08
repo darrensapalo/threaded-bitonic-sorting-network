@@ -1,3 +1,4 @@
+
 package sort;
 
 import sort.network.Network;
@@ -12,7 +13,7 @@ public abstract class BitonicTemplate {
 
     protected abstract String getApproachName();
 
-    protected void before(){}
+    protected void before(Network network, int[] numbers){}
     protected void after(){}
 
 
@@ -25,7 +26,7 @@ public abstract class BitonicTemplate {
     public long start(Network network, int[] numbers){
         System.out.println(getApproachName());
 
-        before();
+        before(network, numbers);
         long startTime = System.currentTimeMillis();
         sort(network, numbers);
         long endTime = System.currentTimeMillis();

@@ -1,12 +1,13 @@
 import sort.Bitonic;
+import sort.BitonicNotTasks;
 import sort.NoThreadBitonic;
 import sort.network.Network;
 import util.Dataset;
 
 public class Driver {
     public static void main(String[] args) {
-        Bitonic.SIZE = 1024 * 64;
-        Bitonic.POOL_SIZE = 32;
+        Bitonic.SIZE = 64;// * 1024 * 4;
+        Bitonic.POOL_SIZE = 4;
 
         /**
          * Perform tests for 1024*64 and the four following data points
@@ -37,9 +38,20 @@ public class Driver {
             duration /= numberOfTests;
             System.out.println("Average: " + duration + "ms");
 
+            /*
             duration = 0;
             for (int count = 0; count < numberOfTests; count++) {
                 Bitonic bitonic = new Bitonic();
+                long durationSub = bitonic.start(network, numbers);
+                duration += durationSub;
+            }
+            duration /= numberOfTests;
+            System.out.println("Average: " + duration + "ms");
+            */
+            
+            duration = 0;
+            for (int count = 0; count < numberOfTests; count++) {
+                BitonicNotTasks bitonic = new BitonicNotTasks();
                 long durationSub = bitonic.start(network, numbers);
                 duration += durationSub;
             }

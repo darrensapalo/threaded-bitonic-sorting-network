@@ -41,8 +41,7 @@ public class Bitonic extends BitonicTemplate{
     private ExecutorCompletionService ecs;
 
     @Override
-    protected void before() {
-
+    protected void before(Network network, int[] numbers) {
         /**
          * Create a thread pool
          */
