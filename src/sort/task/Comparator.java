@@ -85,4 +85,12 @@ public class Comparator implements Serializable, Callable<Boolean>, Runnable {
             numbers[secondElement] = temp;
         }
     }
+    
+    @Override
+    public String toString() {
+    	if (isAscending)
+    		return "Checking if numbers[" + firstElement + "] > numbers[" + secondElement + "] .. " + numbers[firstElement] +">" + numbers[secondElement];
+    	else
+    		return "Checking if numbers[" + firstElement + "] < numbers[" + secondElement + "] .. " + numbers[firstElement] +"<" + numbers[secondElement];
+    }
 }

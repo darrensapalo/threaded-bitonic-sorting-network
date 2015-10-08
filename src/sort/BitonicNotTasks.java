@@ -78,6 +78,7 @@ public class BitonicNotTasks extends BitonicTemplate {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			network.display(step);
 		}while(step++ < network.size());
 	}
 

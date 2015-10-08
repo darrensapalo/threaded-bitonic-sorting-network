@@ -13,7 +13,7 @@ public class Dataset {
 		/* Generate random numbers and place them in the list of elements */
         for (int i = 0; i < size; i++) {
 
-            numbers[i] = random.nextInt();
+            numbers[i] = random.nextInt(100);
         }
         return numbers;
     }

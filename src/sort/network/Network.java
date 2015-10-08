@@ -63,5 +63,10 @@ public class Network implements Serializable{
         return network.get(i);
     }
 
+	public void display(int i) {
+		Gate gate = getGate(i);
+		gate.display();
+	}
+
 
 }

@@ -93,4 +93,11 @@ public class Gate {
 		}
 	}
 
+	public void display() {
+		for(int i = 0; i < comparisons.size(); i++)
+		{
+			System.out.println(comparisons.get(i).toString());
+		}
+	}
+
 }
